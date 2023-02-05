@@ -8,8 +8,9 @@ class_name Pot
 enum { UNLIT, LIT}
 
 var currentState = UNLIT
-
+var intensity = 0.0
 var can_be_picked_up = false
+var prev_vector = Vector2.ZERO
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -17,8 +18,14 @@ func _ready():
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+func _process(delta):
+	if currentState == UNLIT:
+		intensity = max(0.0, intensity-delta)
+	if currentState == LIT:
+		intensity = min(1.0, intensity+delta)
+	$Sprite.material.set_shader_param("intensity", intensity)	
+	
+	pass
 
 
 func _on_PickupRange_area_entered(area):
@@ -28,3 +35,12 @@ func _on_PickupRange_area_entered(area):
 
 func _on_PickupRange_area_exited(area):
 	can_be_picked_up = false
+
+func transition_state(string):
+	if string == "lit":
+		currentState = LIT
+		$Particles2D.restart()
+		$Particles2D.emitting = true
+	if string == "unlit":
+		currentState = UNLIT
+		$Particles2D.emitting = false
