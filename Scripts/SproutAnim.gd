@@ -10,6 +10,7 @@ enum AnimState { EMPTY, CARRYING, GRABBING, DROPPING, ENTER_POT, EXIT_POT}
 signal dropped
 signal grabbed
 signal exited
+signal entered
 
 var frozen = false
 var prevAnim = ""
@@ -88,5 +89,9 @@ func _on_AnimatedSprite_animation_finished():
 		emit_signal("exited")
 		frame = 7
 		stop()
+	elif animState == AnimState.EXIT_POT:
+		emit_signal("entered")
+		position.y = 0
+		transition_state(AnimState.EMPTY)
 		
 

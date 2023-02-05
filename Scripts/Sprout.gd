@@ -10,6 +10,7 @@ export var WalkSpeed: float = 110.0
 export var Friction: float = 200.0
 export var GRAVITY : float = 20.0
 export var JumpHeight: float = 30.0
+export var RetractSpeed: float = 100.0
 export var is_first_sprout = false
 
 var impulses : Vector2
@@ -20,7 +21,8 @@ var can_coyote_jump = true
 var jumped_already = false;
 var can_pick_up = false
 var potReference : RigidBody2D
-
+var bond = null;
+var bind_of_interest = null;
 
 
 var potRef : Node2D
@@ -49,11 +51,15 @@ func _ready():
 		currentState = State.EMPTY
 	else:
 		transition_state(State.EMPTY)
-		Anim.stop()
+		Anim.animation = "pot_exit"
+		Anim.frame = 0
+		Anim.freeze()
 	pass 
 	
 func reveal():
 	frozen = false
+	Anim.unfreeze()
+	print("REVEAL!!")
 	transition_state(State.EMPTY)
 	
 func get_movement_vector():
@@ -121,6 +127,12 @@ func _physics_process(delta):
 	velocity.x = clamp(velocity.x, -WalkSpeed * carrySlowdown , WalkSpeed * carrySlowdown)
 	
 	
+	if Input.is_action_pressed("retract"):
+		if bond != null:
+			bond.maximum_length -= delta * RetractSpeed
+			bond.pull_threshold = 0.8 * bond.maximum_length
+		
+		
 	velocity += impulses
 	velocity = move_and_slide(velocity, Vector2.UP)
 	
@@ -131,8 +143,11 @@ func _physics_process(delta):
 	Anim.animate(velocity, is_falling_down, is_on_floor())
 	
 func try_attach():
-	if Input.is_action_just_pressed("attach") and potReference != null:
-		emit_signal("attaching")
+	if Input.is_action_just_pressed("attach"):
+		print("attach try!")
+		if bind_of_interest != null:
+			print("attach doing!")
+			bind_of_interest.forge_bond_with(self)
 		
 		
 func jump():
@@ -142,13 +157,15 @@ func jump():
 	pass
 	
 func pick_up_pot():
-	if potReference != null and currentState != State.CARRY:
+	if potReference != null and currentState != State.CARRY and not potReference.isStatic:
 		var pot : RigidBody2D = potReference.duplicate()
 		potReference.queue_free()
 		Anim.add_child(pot)
 		pot.visible = false
 		if potReference.is_glowing():
 			transition_state(State.POT_SWITCH)
+			if bond != null:
+				bond.queue_free()
 		else:
 			transition_state(State.CARRY_SWITCH)
 	pass
@@ -174,7 +191,6 @@ func on_coyote_timeout():
 
 
 func _on_PickupRange_area_entered(area:Area2D):
-	print("From sprout!")
 	if area.get_parent().name == "Pot":
 		potReference = area.get_parent()
 		can_pick_up = true
@@ -223,7 +239,18 @@ func _on_AreaOfRedundance_body_exited(body):
 		potSlowdown = 0.0
 		potRef = null
 
+func give_impulse(impulse):
+	impulses += impulse
 
 
 func _on_AnimatedSprite_exited():
 	emit_signal("completed_level")
+
+
+func _on_AnimatedSprite_entered():
+	var new_pot = PotScene.instance()
+	get_tree().root.add_child(new_pot);
+	new_pot.set_as_toplevel(true)
+	new_pot.global_position = global_position + Vector2.RIGHT * 30.0
+	currentState = State.EMPTY
+	Anim.animState = Anim.AnimState.EMPTY
