@@ -202,7 +202,6 @@ position = Vector2( 0.5, 3 )
 shape = SubResource( 16 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
-current = true
 zoom = Vector2( 0.5, 0.5 )
 
 [node name="Coyote" type="Timer" parent="."]
@@ -225,6 +224,10 @@ collision_mask = 4
 [node name="aor" type="CollisionShape2D" parent="AreaOfRedundance"]
 position = Vector2( 0, 4 )
 shape = SubResource( 36 )
+
+[node name="RootAttachPoint" type="RigidBody2D" parent="."]
+position = Vector2( 0, -7 )
+mode = 1
 
 [connection signal="animation_finished" from="AnimatedSprite" to="AnimatedSprite" method="_on_AnimatedSprite_animation_finished"]
 [connection signal="dropped" from="AnimatedSprite" to="." method="_on_AnimatedSprite_dropped"]

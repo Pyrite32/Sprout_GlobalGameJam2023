@@ -27,12 +27,14 @@ var potSlowdown = 0.0
 onready var Buffer = $Buffer
 onready var Coyote = $Coyote
 onready var Anim = $AnimatedSprite
+onready var RootAttachPoint = $RootAttachPoint
 
 onready var PotScene = preload("res://Scenes/Pot.tscn")
 
 enum State { EMPTY, CARRY, CARRY_SWITCH }
-
 var currentState = State.EMPTY
+
+signal attaching(potRef, rootAttachPoint)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -112,13 +114,11 @@ func _physics_process(delta):
 	Anim.animate(velocity, is_falling_down, is_on_floor())
 	
 func try_attach():
-	if Input.is_action_just_pressed("attach") and potReference:
-		attach(potReference)
-		
-func attach(target: RigidBody2D):
-	# Alex, add your stuff here.
-	pass
-	
+	if Input.is_action_just_pressed("attach"):
+		print("Attach button pressed")
+		if potReference:
+			print("Sending attach signal")
+			emit_signal("attaching", potReference, RootAttachPoint)
 		
 func jump():
 	if currentState == State.EMPTY:
@@ -151,10 +151,11 @@ func on_coyote_timeout():
 
 
 func _on_PickupRange_area_entered(area:Area2D):
-	print("From sprout!")
+	print("Entered pot range")
 	if area.get_parent().name == "Pot":
 		potReference = area.get_parent()
 		can_pick_up = true
+		print("Recognized pot: " + potReference.name)
 
 
 func _on_PickupRange_area_exited(area:Area2D):

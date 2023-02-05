@@ -88,5 +88,9 @@ randomness = 0.59
 process_material = SubResource( 6 )
 texture = ExtResource( 3 )
 
+[node name="RootAttachPosition" type="RigidBody2D" parent="."]
+position = Vector2( 0, -9 )
+mode = 1
+
 [connection signal="area_entered" from="PickupRange" to="." method="_on_PickupRange_area_entered"]
 [connection signal="area_exited" from="PickupRange" to="." method="_on_PickupRange_area_exited"]

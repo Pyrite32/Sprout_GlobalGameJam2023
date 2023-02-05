@@ -12,6 +12,8 @@ var intensity = 0.0
 var can_be_picked_up = false
 var prev_vector = Vector2.ZERO
 
+onready var RootAttachPosition = $RootAttachPosition
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.

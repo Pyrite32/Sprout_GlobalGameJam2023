@@ -1,3 +1,4 @@
+class_name Rope
 extends CanvasItem
 
 var RopePiece = preload("res://Scenes/Rope/RopePiece.tscn");
@@ -36,6 +37,28 @@ func spawn_rope(start_pos:Vector2, end_pos:Vector2):
 	var spawn_angle = (end_pos - start_pos).angle() - PI/2
 	
 	create_rope(pieces_amount, rope_start_piece, end_pos, spawn_angle)
+
+func set_start_pos(start_obj:RigidBody2D, start_pos:Vector2):
+	rope_start_piece.global_position = start_pos
+	#rope_start_joint.global_position = start_pos
+		
+	#rope_start_joint.node_a = start_obj.get_path()
+
+func set_end_pos(end_obj:RigidBody2D, end_pos:Vector2):
+	#get_node("RopeEndPiece").global_position = end_pos
+	rope_end_piece.global_position = end_pos
+	
+	#rope_end_joint.node_b = end_obj.get_path()
+
+func spawn_rope_dist(distance:float, start_pos:Vector2, end_pos:Vector2)->void:
+	rope_start_piece.global_position = start_pos
+	rope_end_piece.global_position = end_pos
+	
+	var pieces_amount = round(distance / piece_length)
+	var spawn_angle = (end_pos - start_pos).angle() - PI/2
+	
+	create_rope(pieces_amount, rope_start_piece, end_pos, spawn_angle)
+
 
 func create_rope(pieces_amount:int, parent:Object, end_pos:Vector2, spawn_angle:float) -> void:
 	rope_colors.append(possibleColors[0])
