@@ -59,6 +59,8 @@ func _physics_process(delta):
 				currentState == State.CARRY_SWITCH
 			else:
 				pick_up_pot()
+				
+			
 			
 		if Input.is_action_just_pressed("jump"):
 			if is_on_floor():
@@ -85,10 +87,10 @@ func _physics_process(delta):
 	acceleration *= Acceleration
 	acceleration += Vector2.DOWN * GRAVITY
 	velocity += acceleration
-	var opposingForce = Vector2(-velocity.x * potSlowdown, 0.0)
+	var opposingForce = Vector2(-velocity.x * potSlowdown, -velocity.y * potSlowdown)
 	if potRef != null and potSlowdown > 0.0:
-		var pot_to_player : Vector2 = (Vector2(global_position.x, 0) - Vector2(potRef.global_position.x, 0)).normalized()
-		var opposingForceStrength = max(0.0, pot_to_player.dot(Vector2.RIGHT * -sign(velocity.x)) )
+		var pot_to_player : Vector2 = (Vector2(global_position.x, global_position.y) - Vector2(potRef.global_position.x, potRef.global_position.y)).normalized()
+		var opposingForceStrength = max(0.0, pot_to_player.dot(Vector2(-sign(velocity.x), -sign(velocity.y))) )
 		print("VELOCITY BEFORE: ", velocity)
 		velocity += opposingForce * opposingForceStrength
 		print("VELOCITY AFTER: ", velocity)
@@ -105,8 +107,19 @@ func _physics_process(delta):
 	
 	impulses = Vector2.ZERO
 	
+	try_attach()
+	
 	Anim.animate(velocity, is_falling_down, is_on_floor())
 	
+func try_attach():
+	if Input.is_action_just_pressed("attach") and potReference:
+		attach(potReference)
+		
+func attach(target: RigidBody2D):
+	# Alex, add your stuff here.
+	pass
+	
+		
 func jump():
 	if currentState == State.EMPTY:
 		velocity.y = 0
