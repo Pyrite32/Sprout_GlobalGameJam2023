@@ -39,9 +39,6 @@ collision_mask = 4
 [node name="Button" parent="." instance=ExtResource( 6 )]
 position = Vector2( -137, 181 )
 
-[node name="Pot" parent="Button" instance=ExtResource( 4 )]
-position = Vector2( 236, -238 )
-
 [node name="Water" parent="." instance=ExtResource( 2 )]
 position = Vector2( -321, 135 )
 
@@ -53,3 +50,6 @@ current = true
 
 [node name="Water2" parent="." instance=ExtResource( 2 )]
 position = Vector2( -144, -53 )
+
+[node name="Pot" parent="." instance=ExtResource( 4 )]
+position = Vector2( 99, -57 )
