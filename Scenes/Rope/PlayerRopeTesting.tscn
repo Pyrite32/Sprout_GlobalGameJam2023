@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Scenes/Sprout.tscn" type="PackedScene" id=1]
+[ext_resource path="res://tilesets/floor.tres" type="TileSet" id=2]
+
+[node name="PlayerRopeTesting" type="Node2D"]
+
+[node name="TileMap" type="TileMap" parent="."]
+tile_set = ExtResource( 2 )
+cell_size = Vector2( 16, 16 )
+format = 1
+tile_data = PoolIntArray( 65532, 1, 196608, 65533, 1, 196609, 65534, 1, 196609, 65535, 1, 196609, 0, 1, 196609, 1, 1, 196609, 2, 1, 196609, 3, 1, 196610 )
+
+[node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="Sprout" parent="." instance=ExtResource( 1 )]
+position = Vector2( 21, -18 )
