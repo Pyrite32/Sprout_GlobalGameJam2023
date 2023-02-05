@@ -12,14 +12,14 @@ func _ready():
 	pass # Replace with function body.
 
 func open(a):
-	print("AAAA")
+	print("open door")
 	if a == id:
-		$AnimationPlayer.play("open")
+		$Collider/AnimationPlayer.play("open")
 	
 func close(a):
-	print("AAAA")
+	print("close door")
 	if a == id:
-		$AnimationPlayer.play("close")
+		$Collider/AnimationPlayer.play("close")
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):

@@ -19,7 +19,7 @@ void fragment() {
 [sub_resource type="ShaderMaterial" id=8]
 shader = SubResource( 7 )
 shader_param/color = Color( 0.521569, 0.517647, 0.231373, 1 )
-shader_param/intensity = 1.0
+shader_param/intensity = 0.0
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 7, 7.5 )

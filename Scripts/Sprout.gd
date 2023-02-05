@@ -19,6 +19,7 @@ var can_buffer_jump = false
 var can_coyote_jump = true
 var jumped_already = false;
 var can_pick_up = false
+var dead = false;
 var potReference : RigidBody2D
 
 
@@ -28,6 +29,7 @@ var frozen = true
 
 
 var potSlowdown = 0.0
+var deathIntensity = 0.0
 
 onready var Buffer = $Buffer
 onready var Coyote = $Coyote
@@ -39,10 +41,9 @@ onready var PotScene = preload("res://Scenes/Pot.tscn")
 enum State { EMPTY, CARRY, CARRY_SWITCH, POT_SWITCH}
 var currentState = State.POT_SWITCH
 
-signal attaching
 signal completed_level
-
 signal attaching(potRef, rootAttachPoint)
+signal died(sprout)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -129,6 +130,16 @@ func _physics_process(delta):
 	
 	impulses = Vector2.ZERO
 	
+	#Death shader
+	if !dead:
+		deathIntensity = max(0.0, deathIntensity-delta)
+	else:
+		deathIntensity = min(1.0, deathIntensity+(delta * 4)
+	
+	deathIntensity = clamp(deathIntensity, 0, 1)	
+	$AnimatedSprite.material.set_shader_param("intensity", deathIntensity)
+	
+	#Attach to pot check
 	try_attach()
 	
 	Anim.animate(velocity, is_falling_down, is_on_floor())
@@ -155,8 +166,14 @@ func pick_up_pot():
 		else:
 			transition_state(State.CARRY_SWITCH)
 	pass
-	
 
+func die():
+	dead = true
+	emit_signal("died", self)
+
+func revive():
+	deathIntensity = 0;
+	dead = false
 
 func transition_state(new_state):
 	if new_state == State.CARRY_SWITCH:

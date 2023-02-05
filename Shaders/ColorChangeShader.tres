@@ -1,0 +1,13 @@
+[gd_resource type="Shader" format=2]
+
+[resource]
+code = "shader_type canvas_item;
+
+uniform vec4 color : hint_color;
+uniform float intensity : hint_range(0.0,1.0,0.1);
+
+void fragment() {
+	vec4 texcolor = texture(TEXTURE, UV);
+	COLOR = texcolor + (color * intensity );
+	COLOR.a = texcolor.a;
+}"

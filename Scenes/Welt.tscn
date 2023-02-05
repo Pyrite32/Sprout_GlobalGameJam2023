@@ -7,7 +7,7 @@
 [ext_resource path="res://Scenes/Door.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Scenes/Sprout.tscn" type="PackedScene" id=6]
 [ext_resource path="res://tilesets/floor.tres" type="TileSet" id=7]
-[ext_resource path="res://Scripts/Sunlight.tscn" type="PackedScene" id=8]
+[ext_resource path="res://Scenes/Sunlight.tscn" type="PackedScene" id=8]
 [ext_resource path="res://tilesets/TutorialGesture.tscn" type="PackedScene" id=9]
 
 [node name="TileMap" type="TileMap"]

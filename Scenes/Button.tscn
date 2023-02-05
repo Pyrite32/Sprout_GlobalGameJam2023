@@ -22,8 +22,8 @@ shape = SubResource( 1 )
 [node name="Timer" type="Timer" parent="."]
 wait_time = 2.0
 
-[connection signal="body_entered" from="." to="." method="_on_Button_body_entered"]
 [connection signal="body_entered" from="." to="." method="_on_Button_area_entered"]
-[connection signal="body_exited" from="." to="." method="_on_Button_body_exited"]
+[connection signal="body_entered" from="." to="." method="_on_Button_body_entered"]
 [connection signal="body_exited" from="." to="." method="_on_Button_area_exited"]
+[connection signal="body_exited" from="." to="." method="_on_Button_body_exited"]
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

@@ -49,10 +49,10 @@ tracks/0/keys = {
 "values": [ Vector2( 0, 0 ), Vector2( 0, -64 ) ]
 }
 
-[node name="Door" type="Node2D"]
-
-[node name="Collider" type="KinematicBody2D" parent="." groups=["button_based"]]
+[node name="Door" type="Node2D" groups=["button_based"]]
 script = ExtResource( 2 )
+
+[node name="Collider" type="KinematicBody2D" parent="."]
 
 [node name="Sprite" type="Sprite" parent="Collider"]
 material = SubResource( 2 )

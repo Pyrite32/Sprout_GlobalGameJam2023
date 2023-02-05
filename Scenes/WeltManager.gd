@@ -34,3 +34,7 @@ func _on_Tween_tween_all_completed():
 	prevNode.queue_free()
 	var sproutNode = get_node("L" + str(level)).get_node("Sprout")
 	sproutNode.reveal()
+
+func _on_Sprout_died(sprout:Object):
+	var levelNode = get_node("L" + str(level))
+	sprout.global_position = levelNode.get_node("SpawnPoint").global_position

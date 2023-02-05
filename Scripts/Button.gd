@@ -9,11 +9,13 @@ enum PushState { PRESSED, UNPRESSED }
 var currentState = PushState.UNPRESSED
 
 export var id : int = 0
+export var wait_time : float = 10;
 
 onready var PushTimer = $Timer
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	$Timer.wait_time = wait_time;
 	pass # Replace with function body.
 
 func transition_state(new_state):
