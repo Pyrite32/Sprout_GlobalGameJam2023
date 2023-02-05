@@ -20,6 +20,10 @@ var jumped_already = false;
 var can_pick_up = false
 var potReference : RigidBody2D
 
+var potRef : Node2D
+
+var potSlowdown = 0.0
+
 onready var Buffer = $Buffer
 onready var Coyote = $Coyote
 onready var Anim = $AnimatedSprite
@@ -77,15 +81,23 @@ func _physics_process(delta):
 				Coyote.start()
 	if (acceleration == Vector2.ZERO):
 		velocity = velocity.move_toward(Vector2.ZERO, delta * Friction)
+		
 	acceleration *= Acceleration
 	acceleration += Vector2.DOWN * GRAVITY
 	velocity += acceleration
+	var opposingForce = Vector2(-velocity.x * potSlowdown, 0.0)
+	if potRef != null and potSlowdown > 0.0:
+		var pot_to_player : Vector2 = (Vector2(global_position.x, 0) - Vector2(potRef.global_position.x, 0)).normalized()
+		var opposingForceStrength = max(0.0, pot_to_player.dot(Vector2.RIGHT * -sign(velocity.x)) )
+		print("VELOCITY BEFORE: ", velocity)
+		velocity += opposingForce * opposingForceStrength
+		print("VELOCITY AFTER: ", velocity)
 	
 	var carrySlowdown = 1.0
 	if currentState == State.CARRY:
 		carrySlowdown = 0.5
 	
-	velocity.x = clamp(velocity.x, -WalkSpeed * carrySlowdown, WalkSpeed * carrySlowdown)
+	velocity.x = clamp(velocity.x, -WalkSpeed * carrySlowdown , WalkSpeed * carrySlowdown)
 	
 	
 	velocity += impulses
@@ -160,3 +172,17 @@ func _on_AnimatedSprite_dropped():
 
 func _on_AnimatedSprite_grabbed():
 	transition_state(State.CARRY)
+
+
+func _on_AreaOfRedundance_body_entered(body):
+	if body.name == "Pot":
+		print("it works!")
+		potRef = body as Node2D
+		potSlowdown = 0.99
+		
+
+
+func _on_AreaOfRedundance_body_exited(body):
+	if body.name == "Pot":
+		potSlowdown = 0.0
+		potRef = null
