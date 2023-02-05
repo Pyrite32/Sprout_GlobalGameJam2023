@@ -24,7 +24,7 @@ var potReference : RigidBody2D
 
 
 var potRef : Node2D
-var frozen = false
+var frozen = true
 
 
 var potSlowdown = 0.0
@@ -36,14 +36,25 @@ onready var Anim = $AnimatedSprite
 onready var PotScene = preload("res://Scenes/Pot.tscn")
 
 enum State { EMPTY, CARRY, CARRY_SWITCH, POT_SWITCH}
-var currentState = State.EMPTY
+var currentState = State.POT_SWITCH
 
 signal attaching
 signal completed_level
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	if is_first_sprout:
+		# set idle
+		frozen = false
+		currentState = State.EMPTY
+	else:
+		transition_state(State.EMPTY)
+		Anim.stop()
 	pass 
+	
+func reveal():
+	frozen = false
+	transition_state(State.EMPTY)
 	
 func get_movement_vector():
 	var acceleration = Vector2.ZERO
@@ -129,22 +140,28 @@ func jump():
 	
 func pick_up_pot():
 	if potReference != null and currentState != State.CARRY:
-		if potReference.is_glowing():
-			emit_signal("completed_level")
 		var pot : RigidBody2D = potReference.duplicate()
 		potReference.queue_free()
 		Anim.add_child(pot)
 		pot.visible = false
-		transition_state(State.CARRY_SWITCH)
+		if potReference.is_glowing():
+			transition_state(State.POT_SWITCH)
+		else:
+			transition_state(State.CARRY_SWITCH)
 	pass
 	
 
 
 func transition_state(new_state):
-	currentState = new_state
 	if new_state == State.CARRY_SWITCH:
 		Anim.transition_state(Anim.AnimState.GRABBING)
-		
+	if new_state == State.POT_SWITCH:
+		Anim.transition_state(Anim.AnimState.ENTER_POT)
+		currentState = new_state
+	if new_state == State.EMPTY:
+		if currentState == State.POT_SWITCH:
+			Anim.transition_state(Anim.AnimState.EXIT_POT)
+	currentState = new_state
 
 func on_buffer_timeout():
 	can_buffer_jump = false
@@ -204,5 +221,6 @@ func _on_AreaOfRedundance_body_exited(body):
 		potRef = null
 
 
-func _on_AnimatedSprite_frame_changed():
-	if 
+
+func _on_AnimatedSprite_exited():
+	emit_signal("completed_level")
