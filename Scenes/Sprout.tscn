@@ -1,4 +1,4 @@
-[gd_scene load_steps=54 format=2]
+[gd_scene load_steps=62 format=2]
 
 [ext_resource path="res://Sprites/jump.png" type="Texture" id=1]
 [ext_resource path="res://Sprites/little_walky-sheet.png" type="Texture" id=2]
@@ -10,6 +10,7 @@
 [ext_resource path="res://Sprites/carrywalk.png" type="Texture" id=8]
 [ext_resource path="res://Sprites/carryidle.png" type="Texture" id=9]
 [ext_resource path="res://Sprites/Climb_into-sheet.png" type="Texture" id=10]
+[ext_resource path="res://Sprites/pop_out.png" type="Texture" id=11]
 
 [sub_resource type="AtlasTexture" id=1]
 atlas = ExtResource( 3 )
@@ -82,6 +83,34 @@ region = Rect2( 192, 0, 32, 32 )
 flags = 4
 atlas = ExtResource( 10 )
 region = Rect2( 224, 0, 32, 32 )
+
+[sub_resource type="AtlasTexture" id=51]
+atlas = ExtResource( 11 )
+region = Rect2( 0, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=52]
+atlas = ExtResource( 11 )
+region = Rect2( 64, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=53]
+atlas = ExtResource( 11 )
+region = Rect2( 128, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=54]
+atlas = ExtResource( 11 )
+region = Rect2( 192, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=55]
+atlas = ExtResource( 11 )
+region = Rect2( 256, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=56]
+atlas = ExtResource( 11 )
+region = Rect2( 320, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=57]
+atlas = ExtResource( 11 )
+region = Rect2( 384, 0, 64, 64 )
 
 [sub_resource type="AtlasTexture" id=35]
 atlas = ExtResource( 9 )
@@ -192,6 +221,11 @@ animations = [ {
 "name": "pot_enter",
 "speed": 10.0
 }, {
+"frames": [ SubResource( 51 ), SubResource( 52 ), SubResource( 53 ), SubResource( 54 ), SubResource( 55 ), SubResource( 56 ), SubResource( 57 ) ],
+"loop": true,
+"name": "pot_exit",
+"speed": 5.0
+}, {
 "frames": [ SubResource( 35 ) ],
 "loop": true,
 "name": "pot_idle",
@@ -236,8 +270,7 @@ is_first_sprout = true
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 frames = SubResource( 15 )
-animation = "pot_enter"
-frame = 1
+animation = "pot_exit"
 playing = true
 script = ExtResource( 5 )
 
@@ -273,8 +306,6 @@ mode = 1
 [connection signal="animation_finished" from="AnimatedSprite" to="AnimatedSprite" method="_on_AnimatedSprite_animation_finished"]
 [connection signal="dropped" from="AnimatedSprite" to="." method="_on_AnimatedSprite_dropped"]
 [connection signal="exited" from="AnimatedSprite" to="." method="_on_AnimatedSprite_exited"]
-[connection signal="frame_changed" from="AnimatedSprite" to="." method="_on_AnimatedSprite_frame_changed"]
-[connection signal="frame_changed" from="AnimatedSprite" to="AnimatedSprite" method="_on_AnimatedSprite_frame_changed"]
 [connection signal="grabbed" from="AnimatedSprite" to="." method="_on_AnimatedSprite_grabbed"]
 [connection signal="timeout" from="Coyote" to="." method="on_coyote_timeout"]
 [connection signal="timeout" from="Buffer" to="." method="on_buffer_timeout"]

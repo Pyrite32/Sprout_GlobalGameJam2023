@@ -13,6 +13,7 @@ signal exited
 
 var frozen = false
 var prevAnim = ""
+var shitOffset : int = 16 
 
 func freeze():
 	prevAnim = animation
@@ -52,6 +53,7 @@ func animate(direction: Vector2, is_falling: bool, is_on_floor:bool):
 				play("pot_idle")
 			else:
 				play("pot_walk")
+
 		
 	
 func transition_state(new_state):
@@ -64,6 +66,12 @@ func transition_state(new_state):
 				play("pot_place")
 			AnimState.ENTER_POT:
 				play("pot_enter")
+			AnimState.EXIT_POT:
+				play("pot_exit")
+				position.y = -shitOffset
+			AnimState.EMPTY:
+				if animState == AnimState.EXIT_POT:
+					position.y = 0
 		animState = new_state
 
 # this is terrible code but I don't have any choice!!!! dunno what to do
