@@ -59,6 +59,8 @@ func _physics_process(delta):
 				currentState == State.CARRY_SWITCH
 			else:
 				pick_up_pot()
+				
+			
 			
 		if Input.is_action_just_pressed("jump"):
 			if is_on_floor():
@@ -105,8 +107,19 @@ func _physics_process(delta):
 	
 	impulses = Vector2.ZERO
 	
+	try_attach()
+	
 	Anim.animate(velocity, is_falling_down, is_on_floor())
 	
+func try_attach():
+	if Input.is_action_just_pressed("attach") and potReference:
+		attach(potReference)
+		
+func attach(target: RigidBody2D):
+	# Alex, add your stuff here.
+	pass
+	
+		
 func jump():
 	if currentState == State.EMPTY:
 		velocity.y = 0
