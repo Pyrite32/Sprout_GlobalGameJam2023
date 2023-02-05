@@ -1,7 +1,9 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Scenes/Sprout.tscn" type="PackedScene" id=1]
 [ext_resource path="res://tilesets/floor.tres" type="TileSet" id=2]
+[ext_resource path="res://Scripts/Rope/SproutRootConnector.gd" type="Script" id=3]
+[ext_resource path="res://Scenes/Pot.tscn" type="PackedScene" id=4]
 
 [node name="PlayerRopeTesting" type="Node2D"]
 
@@ -9,9 +11,15 @@
 tile_set = ExtResource( 2 )
 cell_size = Vector2( 16, 16 )
 format = 1
-tile_data = PoolIntArray( 65532, 1, 196608, 65533, 1, 196609, 65534, 1, 196609, 65535, 1, 196609, 0, 1, 196609, 1, 1, 196609, 2, 1, 196609, 3, 1, 196610 )
+tile_data = PoolIntArray( -196619, 1, 196608, -196618, 1, 196609, -196617, 1, 196609, -196616, 1, 7, -131080, 1, 131076, -131079, 1, 2, -65544, 1, 65536, -65543, 1, 131077, -65542, 1, 2, -131069, 1, 0, -131068, 1, 1, -131067, 1, 2, -8, 1, 65536, -7, 1, 65537, -6, 1, 131077, -5, 1, 2, -65533, 1, 65536, -65532, 1, 65537, -65531, 1, 65538, -65528, 1, 0, -65527, 1, 2, 65524, 1, 196608, 65525, 1, 196609, 65526, 1, 196609, 65527, 1, 196609, 65528, 1, 196614, 65529, 1, 131073, 65530, 1, 131073, 65531, 1, 196613, 65532, 1, 196609, 65533, 1, 196609, 65534, 1, 196609, 65535, 1, 196609, 0, 1, 196609, 1, 1, 196609, 2, 1, 196609, 3, 1, 196614, 4, 1, 131073, 5, 1, 196613, 6, 1, 196609, 7, 1, 196609, 8, 1, 196614, 9, 1, 196613, 10, 1, 196610 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
 
 [node name="Sprout" parent="." instance=ExtResource( 1 )]
 position = Vector2( 21, -18 )
+
+[node name="Pot" parent="." instance=ExtResource( 4 )]
+position = Vector2( -25, -8 )
+
+[node name="SproutRootConnector" type="Node2D" parent="."]
+script = ExtResource( 3 )

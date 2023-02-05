@@ -27,10 +27,6 @@ func _process(delta):
 	$Sprite.material.set_shader_param("intensity", intensity)	
 	
 	pass
-	
-func _integrate_forces(state):
-	state.rota
-
 
 func _on_PickupRange_area_entered(area):
 	print("from pot!")
