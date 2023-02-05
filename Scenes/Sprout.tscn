@@ -271,7 +271,7 @@ is_first_sprout = true
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 frames = SubResource( 15 )
 animation = "pot_exit"
-frame = 5
+frame = 1
 playing = true
 script = ExtResource( 5 )
 

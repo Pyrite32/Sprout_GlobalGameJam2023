@@ -17,9 +17,13 @@ onready var root = preload("res://Scenes/PseudoRoot.tscn")
 export var isStatic : bool
 export var forceInitialConnection: bool
 export var length: float = 200.0
+var first_spawn : Vector2
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	$UptakeRange/CollisionShape2D.shape.radius = length / 3
+	first_spawn = global_position
 	if forceInitialConnection:
 		var sprout = get_parent().get_node("Sprout")
 		if sprout != null:
@@ -44,16 +48,23 @@ func _process(delta):
 		intensity = min(1.0, intensity+delta)
 	$Sprite.material.set_shader_param("intensity", intensity)	
 	
+	
 	pass
 
 func _integrate_forces(state):
-	pass
+	if state.linear_velocity.length() - prev_vector.length() > 200.0:
+		state.linear_velocity = Vector2.ZERO
+		
+		
+	
 	
 func forge_bond_with(sprout):
 	if isStatic:
 		print("bondmake!")
 		if sprout.bond != null:
 			sprout.bond.queue_free()
+		if root == null:
+			root = load("res://Scenes/PseudoRoot.tscn")
 		var new_bond = root.instance()
 		add_child(new_bond)
 		new_bond.set_as_toplevel(true)

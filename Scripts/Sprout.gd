@@ -71,12 +71,12 @@ func get_movement_vector():
 	return acceleration * Acceleration
 	
 func _physics_process(delta):
-	var is_falling_down = velocity.y > 0.0 and not is_on_floor()
+	var is_falling_down = velocity.y > 0.0 and not is_on_floor() 
 	var acceleration = Vector2.ZERO
 	if frozen:
 		velocity = Vector2.ZERO
 		return
-	if currentState != State.CARRY_SWITCH and currentState != State.POT_SWITCH or frozen:
+	if currentState != State.CARRY_SWITCH and currentState != State.POT_SWITCH or frozen or (bond == null):
 		acceleration = get_movement_vector()
 		
 		if Input.is_action_pressed("pick_up"):
@@ -128,9 +128,7 @@ func _physics_process(delta):
 	
 	
 	if Input.is_action_pressed("retract"):
-		if bond != null:
-			bond.maximum_length -= delta * RetractSpeed
-			bond.pull_threshold = 0.8 * bond.maximum_length
+		die()
 		
 		
 	velocity += impulses
@@ -246,14 +244,19 @@ func give_impulse(impulse):
 func _on_AnimatedSprite_exited():
 	emit_signal("completed_level")
 
+func die():
+	var respawnpoint = get_parent().get_node("Respawn")
+	global_position = respawnpoint.global_position
+	if bond != null:
+		bond.queue_free()
+	bond = null
 
 func _on_AnimatedSprite_entered():
-	var new_pot = PotScene.instance()
-	new_pot.forge_bond_with(self)
-	new_pot.isStatic = true
-	new_pot.forceInitialConnection = true
-	get_parent().add_child(new_pot);
-	new_pot.global_position = global_position + Vector2.RIGHT * 30.0
+	#var new_pot = PotScene.instance()
+	#new_pot.isStatic = true
+	#new_pot.forge_bond_with(self)
+	#get_parent().add_child(new_pot);
+	#new_pot.global_position = global_position + Vector2.RIGHT * 30.0
 	
 	currentState = State.EMPTY
 	Anim.animState = Anim.AnimState.EMPTY

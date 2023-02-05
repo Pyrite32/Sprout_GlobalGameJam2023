@@ -37,7 +37,7 @@ func _process(delta):
 		
 		
 		if dist > pull_threshold:
-			var linearWeight = min(0.5, pow(((dist-pull_threshold) / (maximum_length - pull_threshold)), 2.0) )
+			var linearWeight = min(0.3, pow(((dist-pull_threshold) / (maximum_length - pull_threshold)), 2.0) )
 			material.set_shader_param("intensity", linearWeight)
 			var velocity = -target.velocity * linearWeight
 			target.give_impulse(velocity)

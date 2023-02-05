@@ -46,6 +46,7 @@ script = ExtResource( 2 )
 tutorialText = "To move, use W, A, S, D."
 
 [node name="Label" type="Label" parent="."]
+modulate = Color( 1, 1, 1, 0 )
 margin_right = 40.0
 margin_bottom = 14.0
 custom_colors/font_color = Color( 1, 1, 1, 1 )

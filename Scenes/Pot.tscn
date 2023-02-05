@@ -54,7 +54,7 @@ color_ramp = SubResource( 5 )
 anim_speed = 0.8
 
 [sub_resource type="CircleShape2D" id=9]
-radius = 137.0
+radius = 50.0
 
 [node name="Pot" type="RigidBody2D"]
 collision_layer = 4
