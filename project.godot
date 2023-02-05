@@ -33,7 +33,7 @@ _global_script_class_icons={
 [application]
 
 config/name="Sprout"
-run/main_scene="res://Scenes/Welt.tscn"
+run/main_scene="res://Scenes/WeltManager.tscn"
 config/icon="res://icon.png"
 
 [editor]

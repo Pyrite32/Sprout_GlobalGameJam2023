@@ -41,7 +41,6 @@ func _on_Timer_timeout():
 	transition_state(PushState.UNPRESSED)
 
 func _on_Button_body_entered(body):
-	print("I PUSHED")
 	transition_state(PushState.PRESSED)
 
 

@@ -10,6 +10,7 @@ export var WalkSpeed: float = 110.0
 export var Friction: float = 200.0
 export var GRAVITY : float = 20.0
 export var JumpHeight: float = 30.0
+export var is_first_sprout = false
 
 var impulses : Vector2
 var velocity : Vector2
@@ -20,7 +21,11 @@ var jumped_already = false;
 var can_pick_up = false
 var potReference : RigidBody2D
 
+
+
 var potRef : Node2D
+var frozen = true
+
 
 var potSlowdown = 0.0
 
@@ -31,14 +36,28 @@ onready var RootAttachPoint = $RootAttachPoint
 
 onready var PotScene = preload("res://Scenes/Pot.tscn")
 
-enum State { EMPTY, CARRY, CARRY_SWITCH }
-var currentState = State.EMPTY
+enum State { EMPTY, CARRY, CARRY_SWITCH, POT_SWITCH}
+var currentState = State.POT_SWITCH
+
+signal attaching
+signal completed_level
 
 signal attaching(potRef, rootAttachPoint)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	if is_first_sprout:
+		# set idle
+		frozen = false
+		currentState = State.EMPTY
+	else:
+		transition_state(State.EMPTY)
+		Anim.stop()
 	pass 
+	
+func reveal():
+	frozen = false
+	transition_state(State.EMPTY)
 	
 func get_movement_vector():
 	var acceleration = Vector2.ZERO
@@ -51,7 +70,7 @@ func get_movement_vector():
 func _physics_process(delta):
 	var is_falling_down = velocity.y > 0.0 and not is_on_floor()
 	var acceleration = Vector2.ZERO
-	if currentState != State.CARRY_SWITCH:
+	if currentState != State.CARRY_SWITCH and currentState != State.POT_SWITCH or frozen:
 		acceleration = get_movement_vector()
 		
 		if Input.is_action_pressed("pick_up"):
@@ -89,13 +108,11 @@ func _physics_process(delta):
 	acceleration *= Acceleration
 	acceleration += Vector2.DOWN * GRAVITY
 	velocity += acceleration
-	var opposingForce = Vector2(-velocity.x * potSlowdown, -velocity.y * potSlowdown)
+	var opposingForce = Vector2(-velocity.x * potSlowdown, 0)
 	if potRef != null and potSlowdown > 0.0:
-		var pot_to_player : Vector2 = (Vector2(global_position.x, global_position.y) - Vector2(potRef.global_position.x, potRef.global_position.y)).normalized()
-		var opposingForceStrength = max(0.0, pot_to_player.dot(Vector2(-sign(velocity.x), -sign(velocity.y))) )
-		print("VELOCITY BEFORE: ", velocity)
+		var pot_to_player : Vector2 = (Vector2(global_position.x, 0) - Vector2(potRef.global_position.x, 0)).normalized()
+		var opposingForceStrength = max(0.0, pot_to_player.dot( Vector2(-sign(velocity.x), 0.0 )  ) )
 		velocity += opposingForce * opposingForceStrength
-		print("VELOCITY AFTER: ", velocity)
 	
 	var carrySlowdown = 1.0
 	if currentState == State.CARRY:
@@ -114,11 +131,9 @@ func _physics_process(delta):
 	Anim.animate(velocity, is_falling_down, is_on_floor())
 	
 func try_attach():
-	if Input.is_action_just_pressed("attach"):
-		print("Attach button pressed")
-		if potReference:
-			print("Sending attach signal")
-			emit_signal("attaching", potReference, RootAttachPoint)
+	if Input.is_action_just_pressed("attach") and potReference != null:
+		emit_signal("attaching")
+		
 		
 func jump():
 	if currentState == State.EMPTY:
@@ -132,16 +147,24 @@ func pick_up_pot():
 		potReference.queue_free()
 		Anim.add_child(pot)
 		pot.visible = false
-		transition_state(State.CARRY_SWITCH)
+		if potReference.is_glowing():
+			transition_state(State.POT_SWITCH)
+		else:
+			transition_state(State.CARRY_SWITCH)
 	pass
 	
 
 
 func transition_state(new_state):
-	currentState = new_state
 	if new_state == State.CARRY_SWITCH:
 		Anim.transition_state(Anim.AnimState.GRABBING)
-		
+	if new_state == State.POT_SWITCH:
+		Anim.transition_state(Anim.AnimState.ENTER_POT)
+		currentState = new_state
+	if new_state == State.EMPTY:
+		if currentState == State.POT_SWITCH:
+			Anim.transition_state(Anim.AnimState.EXIT_POT)
+	currentState = new_state
 
 func on_buffer_timeout():
 	can_buffer_jump = false
@@ -200,3 +223,8 @@ func _on_AreaOfRedundance_body_exited(body):
 	if body.name == "Pot":
 		potSlowdown = 0.0
 		potRef = null
+
+
+
+func _on_AnimatedSprite_exited():
+	emit_signal("completed_level")
