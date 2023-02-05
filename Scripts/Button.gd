@@ -8,6 +8,8 @@ extends Area2D
 enum PushState { PRESSED, UNPRESSED }
 var currentState = PushState.UNPRESSED
 
+export var id : int = 0
+
 onready var PushTimer = $Timer
 
 # Called when the node enters the scene tree for the first time.
@@ -25,10 +27,10 @@ func transition_state(new_state):
 	currentState = new_state
 
 func broadcast_opened():
-	pass
+	get_tree().call_group("button_based", "open", id)
 
 func broadcast_closed():
-	pass
+	get_tree().call_group("button_based", "close", id)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
@@ -38,9 +40,11 @@ func broadcast_closed():
 func _on_Timer_timeout():
 	transition_state(PushState.UNPRESSED)
 
-
-func _on_Button_area_entered(area):
+func _on_Button_body_entered(body):
+	print("I PUSHED")
 	transition_state(PushState.PRESSED)
 
-func _on_Button_area_exited(area):
+
+func _on_Button_body_exited(body):
+	print("I NOT PUSHED!")
 	PushTimer.start()
