@@ -73,3 +73,6 @@ id = 1
 
 [node name="Pot" parent="Platform5" instance=ExtResource( 1 )]
 position = Vector2( 257, -94 )
+
+[node name="Pot" parent="Platform5/Pot" instance=ExtResource( 1 )]
+position = Vector2( -342, 45 )
