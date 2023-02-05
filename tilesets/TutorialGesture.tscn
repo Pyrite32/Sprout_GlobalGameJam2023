@@ -7,13 +7,13 @@
 font_data = ExtResource( 1 )
 
 [sub_resource type="RectangleShape2D" id=2]
-extents = Vector2( 135.5, 62.5 )
+extents = Vector2( 112.5, 41 )
 
 [sub_resource type="Animation" id=3]
 resource_name = "enter"
 length = 2.0
 tracks/0/type = "value"
-tracks/0/path = NodePath(".:modulate")
+tracks/0/path = NodePath("Label:modulate")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -29,7 +29,7 @@ tracks/0/keys = {
 resource_name = "exit"
 length = 2.0
 tracks/0/type = "value"
-tracks/0/path = NodePath(".:modulate")
+tracks/0/path = NodePath("Label:modulate")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -42,7 +42,6 @@ tracks/0/keys = {
 }
 
 [node name="TutorialGesture" type="Node2D"]
-modulate = Color( 1, 1, 1, 0 )
 script = ExtResource( 2 )
 tutorialText = "To move, use W, A, S, D."
 
@@ -57,7 +56,8 @@ text = "Move with W, A, S, D."
 collision_layer = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-position = Vector2( 125.5, 52.5 )
+self_modulate = Color( 0.858824, 1, 0.0509804, 1 )
+position = Vector2( 102.5, 31 )
 shape = SubResource( 2 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]

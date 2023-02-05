@@ -249,8 +249,11 @@ func _on_AnimatedSprite_exited():
 
 func _on_AnimatedSprite_entered():
 	var new_pot = PotScene.instance()
+	new_pot.forge_bond_with(self)
+	new_pot.isStatic = true
 	get_tree().root.add_child(new_pot);
 	new_pot.set_as_toplevel(true)
 	new_pot.global_position = global_position + Vector2.RIGHT * 30.0
+	
 	currentState = State.EMPTY
 	Anim.animState = Anim.AnimState.EMPTY

@@ -7,10 +7,14 @@ extends Node2D
 
 var open_trigger = false
 var close_trigger = false
+export var autostart = false
 export(String, MULTILINE) var tutorialText
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	if autostart:
+		body_entered(null)
+	$Label.text = tutorialText
 	pass # Replace with function body.
 
 
