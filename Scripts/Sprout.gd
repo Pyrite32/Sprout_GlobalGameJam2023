@@ -67,6 +67,9 @@ func get_movement_vector():
 func _physics_process(delta):
 	var is_falling_down = velocity.y > 0.0 and not is_on_floor()
 	var acceleration = Vector2.ZERO
+	if frozen:
+		velocity = Vector2.ZERO
+		return
 	if currentState != State.CARRY_SWITCH and currentState != State.POT_SWITCH or frozen:
 		acceleration = get_movement_vector()
 		
