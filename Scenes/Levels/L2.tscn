@@ -10,7 +10,7 @@
 [ext_resource path="res://tilesets/floor.tres" type="TileSet" id=9]
 [ext_resource path="res://Scenes/Platform.tscn" type="PackedScene" id=10]
 
-[node name="Node2D" type="Node2D"]
+[node name="L2" type="Node2D"]
 
 [node name="SpawnPoint" type="Node2D" parent="."]
 position = Vector2( -317, 133 )
@@ -67,12 +67,12 @@ position = Vector2( 91, 23 )
 [node name="Platform4" parent="." instance=ExtResource( 10 )]
 position = Vector2( 120, -112 )
 
+[node name="Pot2" parent="." instance=ExtResource( 1 )]
+position = Vector2( -95, -59 )
+
+[node name="Pot" parent="." instance=ExtResource( 1 )]
+position = Vector2( 247, -104 )
+
 [node name="Platform5" parent="." instance=ExtResource( 10 )]
 position = Vector2( -10, -10 )
 id = 1
-
-[node name="Pot" parent="Platform5" instance=ExtResource( 1 )]
-position = Vector2( 257, -94 )
-
-[node name="Pot" parent="Platform5/Pot" instance=ExtResource( 1 )]
-position = Vector2( -342, 45 )
