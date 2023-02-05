@@ -10,3 +10,5 @@ texture = ExtResource( 3 )
 [node name="WaterArea" parent="." instance=ExtResource( 1 )]
 position = Vector2( 0, 2 )
 scale = Vector2( 2.44, 0.639998 )
+
+[connection signal="body_entered" from="WaterArea" to="WaterArea" method="_on_WaterArea_body_entered"]

@@ -243,6 +243,7 @@ is_first_sprout = true
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 material = SubResource( 51 )
 frames = SubResource( 15 )
+frame = 5
 playing = true
 script = ExtResource( 5 )
 
@@ -277,6 +278,7 @@ mode = 1
 
 [connection signal="animation_finished" from="AnimatedSprite" to="AnimatedSprite" method="_on_AnimatedSprite_animation_finished"]
 [connection signal="dropped" from="AnimatedSprite" to="." method="_on_AnimatedSprite_dropped"]
+[connection signal="entered" from="AnimatedSprite" to="." method="_on_AnimatedSprite_entered"]
 [connection signal="exited" from="AnimatedSprite" to="." method="_on_AnimatedSprite_exited"]
 [connection signal="grabbed" from="AnimatedSprite" to="." method="_on_AnimatedSprite_grabbed"]
 [connection signal="timeout" from="Coyote" to="." method="on_coyote_timeout"]

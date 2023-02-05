@@ -3,7 +3,7 @@ extends Area2D
 
 var uses = 1
 
-func _on_Sprout_body_entered(sprout:Object):
+func _on_WaterArea_body_entered(sprout:Object):
 	#sprout.grow();
 	uses = uses - 1
 	

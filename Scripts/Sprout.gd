@@ -146,9 +146,10 @@ func _physics_process(delta):
 	if !dead:
 		deathIntensity = max(0.0, deathIntensity-delta)
 	else:
-		deathIntensity = min(1.0, deathIntensity+(delta * 4)
+		print("Dying")
+		deathIntensity = min(1.0, deathIntensity+(delta * 4))
 	
-	deathIntensity = clamp(deathIntensity, 0, 1)	
+	deathIntensity = clamp(deathIntensity, 0, 1)
 	$AnimatedSprite.material.set_shader_param("intensity", deathIntensity)
 	
 	#Attach to pot check
@@ -271,8 +272,11 @@ func _on_AnimatedSprite_exited():
 
 func _on_AnimatedSprite_entered():
 	var new_pot = PotScene.instance()
-	get_tree().root.add_child(new_pot);
-	new_pot.set_as_toplevel(true)
+	new_pot.forge_bond_with(self)
+	new_pot.isStatic = true
+	new_pot.forceInitialConnection = true
+	get_parent().add_child(new_pot);
 	new_pot.global_position = global_position + Vector2.RIGHT * 30.0
+	
 	currentState = State.EMPTY
 	Anim.animState = Anim.AnimState.EMPTY

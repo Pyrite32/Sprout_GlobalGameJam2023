@@ -195,7 +195,6 @@ points = PoolVector2Array( 16, 16, 0, 16, 0, 0, 16, 0 )
 
 [sub_resource type="StreamTexture" id=102]
 flags = 4
-load_path = "res://.import/special_tiles.png-19f9a96ce973eb2e4208b04950ef7d30.stex"
 
 [sub_resource type="ConvexPolygonShape2D" id=53]
 points = PoolVector2Array( 0, 0, 0, 0, 16, 16, 0, 16 )
