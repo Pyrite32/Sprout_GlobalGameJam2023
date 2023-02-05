@@ -1,9 +1,11 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=12 format=2]
 
-[ext_resource path="res://Sprout.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Sprites/Sprite-0001.png" type="Texture" id=1]
 [ext_resource path="res://Sprites/tile.png" type="Texture" id=2]
-[ext_resource path="res://Sprites/Sprite-0001.png" type="Texture" id=3]
-[ext_resource path="res://Pot.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Scenes/Pot.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Scenes/Button.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Scenes/Door.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Scenes/Sprout.tscn" type="PackedScene" id=6]
 
 [sub_resource type="ConvexPolygonShape2D" id=1]
 points = PoolVector2Array( 0, 0, 24, 0, 24, 24, 0, 24 )
@@ -99,10 +101,12 @@ points = PoolVector2Array( 0, 0, 24, 0, 24, 24, 0, 24 )
 [node name="TileMap" type="TileMap"]
 tile_set = SubResource( 5 )
 cell_size = Vector2( 24, 24 )
+collision_layer = 2
+collision_mask = 5
 format = 1
 tile_data = PoolIntArray( -196617, 2, 0, -196616, 2, 0, -196615, 2, 0, -196614, 2, 0, -196613, 2, 0, -196612, 2, 0, -131081, 1, 0, -131080, 1, 0, -131079, 1, 0, -131078, 1, 0, -131077, 1, 0, -131076, 1, 0, -65545, 1, 0, -65544, 1, 0, -9, 1, 0, -8, 1, 0, 65527, 1, 0, 65528, 1, 0, 131063, 1, 0, 131064, 1, 0, 131065, 2, 0, 131066, 2, 0, 131067, 2, 0, 131068, 2, 0, 196599, 1, 0, 196600, 1, 0, 196601, 1, 0, 196602, 1, 0, 196603, 1, 0, 196604, 0, 0, 196605, 2, 0, 196606, 2, 0, 196607, 2, 0, 131072, 2, 0, 131073, 2, 0, 131074, 2, 0, 131075, 2, 0, 131076, 2, 0, 131077, 2, 0, 131078, 2, 0, 131079, 2, 0, 131080, 2, 0, 131081, 2, 0, 262135, 1, 0, 262136, 1, 1, 262137, 1, 2, 262138, 1, 1, 262139, 1, 0, 262140, 1, 0, 262141, 1, 0, 262142, 1, 0, 262143, 1, 0, 196608, 1, 0, 196609, 1, 0, 196610, 1, 0, 196611, 1, 0, 196612, 1, 0, 196613, 1, 0, 196614, 1, 0, 196615, 1, 0, 196616, 1, 0, 196617, 1, 0, 196618, 2, 0, 196619, 2, 0, 196620, 2, 0, 196621, 2, 0, 196622, 2, 0, 196623, 2, 0, 196624, 2, 0, 327671, 1, 0, 327672, 1, 0, 327673, 1, 0, 327674, 1, 0, 327675, 1, 0, 327676, 1, 0, 327677, 1, 1, 327678, 1, 1, 327679, 1, 1, 262144, 1, 2, 262145, 1, 1, 262146, 1, 1, 262147, 1, 1, 262148, 1, 1, 262149, 1, 1, 262150, 1, 1, 262151, 1, 1, 262152, 1, 1, 262153, 1, 0, 262154, 0, 0, 262155, 0, 0, 262156, 0, 0, 262157, 0, 0, 262158, 1, 0, 262159, 1, 0, 262160, 0, 0, 393212, 1, 0, 393213, 1, 1, 393214, 1, 1, 393215, 1, 1, 327680, 1, 0, 327681, 1, 1, 327682, 1, 0, 327683, 1, 0, 327684, 1, 1, 327685, 1, 2, 327686, 1, 1, 327687, 1, 1, 327688, 1, 1, 327689, 1, 0, 327690, 1, 0, 327691, 1, 0, 327692, 1, 0, 327693, 1, 0, 327694, 1, 0, 327695, 1, 0, 327696, 0, 0, 458748, 1, 0, 458749, 1, 2, 458750, 1, 2, 458751, 1, 2, 393216, 1, 1, 393217, 1, 1, 393218, 1, 1, 393219, 1, 1, 393220, 1, 1, 393221, 1, 0, 393222, 1, 1, 393223, 1, 2, 393224, 1, 1, 393225, 1, 2, 393226, 1, 0, 393227, 1, 1, 393228, 1, 1, 393229, 1, 2, 393230, 1, 0, 393231, 1, 0, 393232, 1, 0, 524284, 1, 0, 524285, 1, 0, 524286, 1, 0, 524287, 1, 0, 458752, 1, 0, 458753, 1, 0, 458754, 1, 0, 458755, 1, 0, 458756, 1, 0, 458757, 1, 0, 458758, 1, 0, 458759, 1, 0, 458760, 1, 0, 458761, 1, 0, 458762, 1, 0, 458763, 1, 0, 458764, 1, 0, 458765, 1, 0, 458766, 1, 0, 458767, 0, 0, 458768, 1, 0 )
 
-[node name="Sprout" parent="." instance=ExtResource( 1 )]
+[node name="Sprout" parent="." instance=ExtResource( 6 )]
 
 [node name="ParallaxBackground" type="ParallaxBackground" parent="."]
 
@@ -112,9 +116,16 @@ motion_mirroring = Vector2( 256, 0 )
 
 [node name="Sprite" type="Sprite" parent="ParallaxBackground/ParallaxLayer"]
 scale = Vector2( 3, 3 )
-texture = ExtResource( 3 )
+texture = ExtResource( 1 )
 region_enabled = true
 region_rect = Rect2( 0, 0, 512, 128 )
 
-[node name="Pot" parent="." instance=ExtResource( 4 )]
+[node name="Pot" parent="." instance=ExtResource( 3 )]
 position = Vector2( 177, 0 )
+
+[node name="Button" parent="." instance=ExtResource( 4 )]
+position = Vector2( 93, 34 )
+id = -2
+
+[node name="Door" parent="." instance=ExtResource( 5 )]
+position = Vector2( 236, 34 )

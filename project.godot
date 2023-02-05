@@ -17,7 +17,7 @@ _global_script_classes=[ {
 "base": "RigidBody2D",
 "class": "Pot",
 "language": "GDScript",
-"path": "res://Pot.gd"
+"path": "res://Scripts/Pot.gd"
 } ]
 _global_script_class_icons={
 "GitAPI": "",
@@ -27,7 +27,7 @@ _global_script_class_icons={
 [application]
 
 config/name="Sprout"
-run/main_scene="res://Welt.tscn"
+run/main_scene="res://Scenes/Welt.tscn"
 config/icon="res://icon.png"
 
 [editor]

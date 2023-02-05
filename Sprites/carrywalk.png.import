@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/guns_practice.png-a434d6a62ec7b0e0b84269b45f225bf7.stex"
+path="res://.import/carrywalk.png-d74dfd850d6ad883c2181d388ba91663.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Sprites/guns_practice.png"
-dest_files=[ "res://.import/guns_practice.png-a434d6a62ec7b0e0b84269b45f225bf7.stex" ]
+source_file="res://Sprites/carrywalk.png"
+dest_files=[ "res://.import/carrywalk.png-d74dfd850d6ad883c2181d388ba91663.stex" ]
 
 [params]
 
@@ -20,7 +20,7 @@ compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0
 flags/repeat=0
-flags/filter=true
+flags/filter=false
 flags/mipmaps=false
 flags/anisotropic=false
 flags/srgb=2
