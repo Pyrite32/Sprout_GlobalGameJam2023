@@ -75,14 +75,17 @@ func _physics_process(delta):
 		if is_falling_down:
 			if Coyote.is_stopped() and can_coyote_jump:
 				Coyote.start()
-	
 	if (acceleration == Vector2.ZERO):
 		velocity = velocity.move_toward(Vector2.ZERO, delta * Friction)
 	acceleration *= Acceleration
 	acceleration += Vector2.DOWN * GRAVITY
 	velocity += acceleration
 	
-	velocity.x = clamp(velocity.x, -WalkSpeed, WalkSpeed)
+	var carrySlowdown = 1.0
+	if currentState == State.CARRY:
+		carrySlowdown = 0.5
+	
+	velocity.x = clamp(velocity.x, -WalkSpeed * carrySlowdown, WalkSpeed * carrySlowdown)
 	
 	
 	velocity += impulses
@@ -93,8 +96,9 @@ func _physics_process(delta):
 	Anim.animate(velocity, is_falling_down, is_on_floor())
 	
 func jump():
-	velocity.y = 0
-	impulses = Vector2.UP * JumpHeight
+	if currentState == State.EMPTY:
+		velocity.y = 0
+		impulses = Vector2.UP * JumpHeight
 	pass
 	
 func pick_up_pot():

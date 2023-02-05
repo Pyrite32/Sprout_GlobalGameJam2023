@@ -1,15 +1,10 @@
-extends RigidBody2D
-class_name Pot
+extends Node2D
+
 
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
 
-enum { UNLIT, LIT}
-
-var currentState = UNLIT
-
-var can_be_picked_up = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -21,10 +16,9 @@ func _ready():
 #	pass
 
 
-func _on_PickupRange_area_entered(area):
-	print("from pot!")
-	can_be_picked_up = true
+func _on_Area2D_body_entered(body):
+	pass # Replace with function body.
 
 
-func _on_PickupRange_area_exited(area):
-	can_be_picked_up = false
+func _on_Area2D_body_exited(body):
+	pass # Replace with function body.
