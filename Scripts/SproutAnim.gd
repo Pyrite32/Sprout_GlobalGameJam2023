@@ -5,7 +5,7 @@ extends AnimatedSprite
 # var a = 2
 # var b = "text"
 
-enum AnimState { EMPTY, CARRYING, GRABBING, DROPPING}
+enum AnimState { EMPTY, CARRYING, GRABBING, DROPPING, ENTER_POT, EXIT_POT}
 
 signal dropped
 signal grabbed
@@ -46,9 +46,13 @@ func transition_state(new_state):
 		AnimState.DROPPING:
 			get_parent().transition_state(get_parent().State.CARRY_SWITCH)
 			play("pot_place")
+		AnimState.ENTER_POT:
+			play("pot_enter")
 	animState = new_state
 
 # this is terrible code but I don't have any choice!!!! dunno what to do
+
+
 func _on_AnimatedSprite_animation_finished():
 	if animState == AnimState.GRABBING:
 		# move to carry
@@ -56,3 +60,7 @@ func _on_AnimatedSprite_animation_finished():
 		emit_signal("grabbed")
 	elif animState == AnimState.DROPPING:
 		emit_signal("dropped")
+
+
+func _on_AnimatedSprite_frame_changed():
+	pass # Replace with function body.

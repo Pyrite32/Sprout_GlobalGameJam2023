@@ -12,8 +12,16 @@ var intensity = 0.0
 var can_be_picked_up = false
 var prev_vector = Vector2.ZERO
 
+export var isStatic : bool
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	if isStatic:
+		$Sprite.frame = 1
+		$Collider.disabled = true
+		gravity_scale = 0
+	else:
+		$Sprite.frame = 0
 	pass # Replace with function body.
 
 
@@ -27,15 +35,16 @@ func _process(delta):
 	$Sprite.material.set_shader_param("intensity", intensity)	
 	
 	pass
-	
-func _integrate_forces(state):
-	state.rota
 
+func _integrate_forces(state):
+	pass
 
 func _on_PickupRange_area_entered(area):
 	print("from pot!")
 	can_be_picked_up = true
 
+func is_glowing():
+	return currentState == LIT
 
 func _on_PickupRange_area_exited(area):
 	can_be_picked_up = false

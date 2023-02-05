@@ -10,6 +10,7 @@ export var WalkSpeed: float = 110.0
 export var Friction: float = 200.0
 export var GRAVITY : float = 20.0
 export var JumpHeight: float = 30.0
+export var is_first_sprout = false
 
 var impulses : Vector2
 var velocity : Vector2
@@ -20,7 +21,11 @@ var jumped_already = false;
 var can_pick_up = false
 var potReference : RigidBody2D
 
+
+
 var potRef : Node2D
+var frozen = false
+
 
 var potSlowdown = 0.0
 
@@ -30,9 +35,11 @@ onready var Anim = $AnimatedSprite
 
 onready var PotScene = preload("res://Scenes/Pot.tscn")
 
-enum State { EMPTY, CARRY, CARRY_SWITCH }
-
+enum State { EMPTY, CARRY, CARRY_SWITCH, POT_SWITCH}
 var currentState = State.EMPTY
+
+signal attaching
+signal completed_level
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -49,7 +56,7 @@ func get_movement_vector():
 func _physics_process(delta):
 	var is_falling_down = velocity.y > 0.0 and not is_on_floor()
 	var acceleration = Vector2.ZERO
-	if currentState != State.CARRY_SWITCH:
+	if currentState != State.CARRY_SWITCH and currentState != State.POT_SWITCH or frozen:
 		acceleration = get_movement_vector()
 		
 		if Input.is_action_pressed("pick_up"):
@@ -87,13 +94,11 @@ func _physics_process(delta):
 	acceleration *= Acceleration
 	acceleration += Vector2.DOWN * GRAVITY
 	velocity += acceleration
-	var opposingForce = Vector2(-velocity.x * potSlowdown, -velocity.y * potSlowdown)
+	var opposingForce = Vector2(-velocity.x * potSlowdown, 0)
 	if potRef != null and potSlowdown > 0.0:
-		var pot_to_player : Vector2 = (Vector2(global_position.x, global_position.y) - Vector2(potRef.global_position.x, potRef.global_position.y)).normalized()
-		var opposingForceStrength = max(0.0, pot_to_player.dot(Vector2(-sign(velocity.x), -sign(velocity.y))) )
-		print("VELOCITY BEFORE: ", velocity)
+		var pot_to_player : Vector2 = (Vector2(global_position.x, 0) - Vector2(potRef.global_position.x, 0)).normalized()
+		var opposingForceStrength = max(0.0, pot_to_player.dot( Vector2(-sign(velocity.x), 0.0 )  ) )
 		velocity += opposingForce * opposingForceStrength
-		print("VELOCITY AFTER: ", velocity)
 	
 	var carrySlowdown = 1.0
 	if currentState == State.CARRY:
@@ -112,13 +117,9 @@ func _physics_process(delta):
 	Anim.animate(velocity, is_falling_down, is_on_floor())
 	
 func try_attach():
-	if Input.is_action_just_pressed("attach") and potReference:
-		attach(potReference)
+	if Input.is_action_just_pressed("attach") and potReference != null:
+		emit_signal("attaching")
 		
-func attach(target: RigidBody2D):
-	# Alex, add your stuff here.
-	pass
-	
 		
 func jump():
 	if currentState == State.EMPTY:
@@ -128,6 +129,8 @@ func jump():
 	
 func pick_up_pot():
 	if potReference != null and currentState != State.CARRY:
+		if potReference.is_glowing():
+			emit_signal("completed_level")
 		var pot : RigidBody2D = potReference.duplicate()
 		potReference.queue_free()
 		Anim.add_child(pot)
@@ -199,3 +202,7 @@ func _on_AreaOfRedundance_body_exited(body):
 	if body.name == "Pot":
 		potSlowdown = 0.0
 		potRef = null
+
+
+func _on_AnimatedSprite_frame_changed():
+	if 
