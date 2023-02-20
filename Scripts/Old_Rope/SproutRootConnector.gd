@@ -10,9 +10,11 @@ var sprout_point:RigidBody2D = null
 
 onready var Sprout := get_parent().get_node("Sprout");
 
+
 func _ready():
 	print("Sprout found: " + Sprout.name)
 	Sprout.connect("attaching", self, "_on_Sprout_attaching")
+
 
 func _process(delta):
 	if rope_instance != null:
@@ -21,6 +23,7 @@ func _process(delta):
 
 		if sprout_point != null:
 			rope_instance.set_end_pos(sprout_point, sprout_point.global_position)
+
 
 func _on_Sprout_attaching(potRef:RigidBody2D, rootAttachPoint:RigidBody2D):
 	print("Sprout trying to attach")
@@ -48,6 +51,7 @@ func _on_Sprout_attaching(potRef:RigidBody2D, rootAttachPoint:RigidBody2D):
 	rope_instance.spawn_rope(start_pos, start_pos - Vector2(0, 200))
 	
 	print("Root attached")
+
 
 #func _input(event):
 #	if event is InputEventMouseButton and !event.is_pressed():

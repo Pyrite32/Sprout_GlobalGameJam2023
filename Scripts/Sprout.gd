@@ -1,10 +1,6 @@
 extends KinematicBody2D
 
 
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
-
 export var Acceleration: float = 40.0
 export var WalkSpeed: float = 110.0
 export var Friction: float = 200.0
@@ -47,7 +43,7 @@ signal completed_level
 signal attaching(potRef, rootAttachPoint)
 signal died(sprout)
 
-# Called when the node enters the scene tree for the first time.
+
 func _ready():
 	if is_first_sprout:
 		# set idle
@@ -58,14 +54,15 @@ func _ready():
 		Anim.animation = "pot_exit"
 		Anim.frame = 0
 		Anim.freeze()
-	pass 
-	
+
+
 func reveal():
 	frozen = false
 	Anim.unfreeze()
 	print("REVEAL!!")
 	transition_state(State.EMPTY)
-	
+
+
 func get_movement_vector():
 	var acceleration = Vector2.ZERO
 	if Input.is_action_pressed("move_left"):
@@ -73,7 +70,8 @@ func get_movement_vector():
 	if Input.is_action_pressed("move_right"):
 		acceleration = Vector2.RIGHT
 	return acceleration * Acceleration
-	
+
+
 func _physics_process(delta):
 	var is_falling_down = velocity.y > 0.0 and not is_on_floor()
 	var acceleration = Vector2.ZERO
@@ -156,23 +154,27 @@ func _physics_process(delta):
 	try_attach()
 	
 	Anim.animate(velocity, is_falling_down, is_on_floor())
-	
+
+
 func try_attach():
 	if Input.is_action_just_pressed("attach"):
-		print("attach try!")
+		print("Button has been pressed for " + self.name + " to attach to a nearby pot")
 		if bind_of_interest != null:
-			print("attach doing!")
+			print(self.name + " has successfully attached to pot")
 			bind_of_interest.forge_bond_with(self)
-		
-		
+
+
 func jump():
 	if currentState == State.EMPTY:
+		print(self.name + " has jumped")
 		velocity.y = 0
 		impulses = Vector2.UP * JumpHeight
-	pass
-	
+
+
 func pick_up_pot():
 	if potReference != null and currentState != State.CARRY and not potReference.isStatic:
+		print(self.name + " has picked up pot " + potReference.name)
+		
 		var pot : RigidBody2D = potReference.duplicate()
 		potReference.queue_free()
 		Anim.add_child(pot)
@@ -183,13 +185,16 @@ func pick_up_pot():
 				bond.queue_free()
 		else:
 			transition_state(State.CARRY_SWITCH)
-	pass
+
 
 func die():
+	print(self.name + " has died. ")
 	dead = true
 	emit_signal("died", self)
 
+
 func revive():
+	print(self.name + " has been revived. ")
 	deathIntensity = 0;
 	dead = false
 
@@ -229,7 +234,6 @@ func _on_AnimatedSprite_dropped():
 
 	var pot = Anim.get_child(0)
 	if pot != null and currentState == State.CARRY_SWITCH:
-		print("doing stuff!")
 		var new_pot = PotScene.instance()
 		get_tree().root.add_child(new_pot);
 		new_pot.set_as_toplevel(true)
@@ -243,6 +247,8 @@ func _on_AnimatedSprite_dropped():
 		transition_state(State.EMPTY)
 		new_pot.visible = true
 		Anim.transition_state(Anim.AnimState.EMPTY)
+		
+		print(self.name + " has changed state from CARRY_SWITCH to " + State.keys()[currentState])
 
 
 func _on_AnimatedSprite_grabbed():
@@ -251,7 +257,7 @@ func _on_AnimatedSprite_grabbed():
 
 func _on_AreaOfRedundance_body_entered(body):
 	if body.name == "Pot":
-		print("it works!")
+		print(body.name + " has entered the AreaOfRedundance")
 		potRef = body as Node2D
 		potSlowdown = 0.99
 		
@@ -262,11 +268,13 @@ func _on_AreaOfRedundance_body_exited(body):
 		potSlowdown = 0.0
 		potRef = null
 
+
 func give_impulse(impulse):
 	impulses += impulse
 
 
 func _on_AnimatedSprite_exited():
+	print(self.name + " has completed the level")
 	emit_signal("completed_level")
 
 

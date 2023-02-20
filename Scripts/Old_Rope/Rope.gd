@@ -16,15 +16,18 @@ onready var rope_end_piece = $RopeEndPiece
 onready var rope_start_joint = $RopeStartPiece/CollisionShape2D/PinJoint2D
 onready var rope_end_joint = $RopeEndPiece/CollisionShape2D/PinJoint2D
 
+
 func _process(_delta):
 	get_rope_points()
 	
 	if !rope_points.empty():
 		update()
-		
+
+
 func _draw():
 	draw_polyline_colors(rope_points, rope_colors, rope_width, true)
-	
+
+
 func spawn_rope(start_pos:Vector2, end_pos:Vector2):
 	rope_start_piece.global_position = start_pos
 	rope_end_piece.global_position = end_pos
@@ -38,17 +41,19 @@ func spawn_rope(start_pos:Vector2, end_pos:Vector2):
 	
 	create_rope(pieces_amount, rope_start_piece, end_pos, spawn_angle)
 
+
 func set_start_pos(start_obj:RigidBody2D, start_pos:Vector2):
 	rope_start_piece.global_position = start_pos
 	#rope_start_joint.global_position = start_pos
-		
 	#rope_start_joint.node_a = start_obj.get_path()
+
 
 func set_end_pos(end_obj:RigidBody2D, end_pos:Vector2):
 	#get_node("RopeEndPiece").global_position = end_pos
 	rope_end_piece.global_position = end_pos
 	
 	#rope_end_joint.node_b = end_obj.get_path()
+
 
 func spawn_rope_dist(distance:float, start_pos:Vector2, end_pos:Vector2)->void:
 	rope_start_piece.global_position = start_pos
@@ -80,7 +85,8 @@ func create_rope(pieces_amount:int, parent:Object, end_pos:Vector2, spawn_angle:
 	
 	rope_end_joint.node_a = rope_end_piece.get_path()
 	rope_end_joint.node_b = rope_parts[-1].get_path()
-		
+
+
 func add_piece(parent:Object, id:int, spawn_angle:float) -> Object:
 		var joint : PinJoint2D = parent.get_node("CollisionShape2D/PinJoint2D") as PinJoint2D
 		
@@ -95,6 +101,7 @@ func add_piece(parent:Object, id:int, spawn_angle:float) -> Object:
 		joint.node_b = piece.get_path()
 		
 		return piece
+
 
 func get_rope_points() -> void:
 	rope_points = []

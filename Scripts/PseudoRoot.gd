@@ -1,12 +1,5 @@
 extends Node2D
 
-
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
-
-
-
 var endPoint = Vector2.ZERO
 var target : KinematicBody2D
 
@@ -14,17 +7,19 @@ export var LinkName: String
 export var pull_threshold = 200.0
 export var maximum_length = 600.0
 
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	var new_target = get_parent().get_node(LinkName)
+
+func init(link):
+	var new_target = link
 	bind_root_target(new_target)
-	pass # Replace with function body.
+
 
 func bind_root_target(new_target:KinematicBody2D):
-	target = new_target
-	
+	if new_target != null:
+		print(self.name + " root has been binded to " + new_target.name)
+		target = new_target
+
+
 func _process(delta):
-	
 	if target != null:
 		endPoint = target.global_position
 		var dist = endPoint.distance_to(global_position)
@@ -41,10 +36,5 @@ func _process(delta):
 			material.set_shader_param("intensity", linearWeight)
 			var velocity = -target.velocity * linearWeight
 			target.give_impulse(velocity)
-	
-	
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass

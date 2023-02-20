@@ -4,6 +4,7 @@ var Rope = preload("res://Scenes/Rope/Rope.tscn")
 var start_pos := Vector2.ZERO
 var end_pos := Vector2.ZERO
 
+
 func _input(event):
 	if event is InputEventMouseButton and !event.is_pressed():
 		if start_pos == Vector2.ZERO:

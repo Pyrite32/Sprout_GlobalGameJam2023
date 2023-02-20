@@ -22,7 +22,7 @@ _global_script_classes=[ {
 "base": "CanvasItem",
 "class": "Rope",
 "language": "GDScript",
-"path": "res://Scripts/Rope/Rope.gd"
+"path": "res://Scripts/Old_Rope/Rope.gd"
 } ]
 _global_script_class_icons={
 "GitAPI": "",

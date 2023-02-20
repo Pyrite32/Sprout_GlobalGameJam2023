@@ -1,10 +1,5 @@
 extends AnimatedSprite
 
-
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
-
 enum AnimState { EMPTY, CARRYING, GRABBING, DROPPING, ENTER_POT, EXIT_POT}
 
 signal dropped
@@ -15,22 +10,18 @@ signal entered
 var frozen = false
 var prevAnim = ""
 var shitOffset : int = 16 
+var animState = AnimState.EMPTY
+
 
 func freeze():
 	prevAnim = animation
 	stop()
 	frozen = true
-	
+
+
 func unfreeze():
 	play(prevAnim)
 	frozen = false
-	
-
-var animState = AnimState.EMPTY
-
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass # Replace with function body.
 
 
 func animate(direction: Vector2, is_falling: bool, is_on_floor:bool):
@@ -55,8 +46,7 @@ func animate(direction: Vector2, is_falling: bool, is_on_floor:bool):
 			else:
 				play("pot_walk")
 
-		
-	
+
 func transition_state(new_state):
 	if not frozen:
 		match new_state:
@@ -75,9 +65,8 @@ func transition_state(new_state):
 					position.y = 0
 		animState = new_state
 
+
 # this is terrible code but I don't have any choice!!!! dunno what to do
-
-
 func _on_AnimatedSprite_animation_finished():
 	if animState == AnimState.GRABBING:
 		# move to carry
@@ -93,5 +82,5 @@ func _on_AnimatedSprite_animation_finished():
 		emit_signal("entered")
 		position.y = 0
 		transition_state(AnimState.EMPTY)
-		
+
 
